@@ -50,7 +50,7 @@ public class ShortUrlController {
         return ResponseEntity.ok().body(new BaseResponse(true,key,BaseResponse.SUCCESSFUL));
     }
 
-    @GetMapping("/v1/stat/{key}")
+    @GetMapping("/api/v1/stat/{key}")
     public ResponseEntity<BaseResponse> getStats(@PathVariable String key) throws KeyNotFoundException {
         VisitStateDto dto = shortUrlService.getVisitStateByKey(key);
         return ResponseEntity.ok().body(dto);
