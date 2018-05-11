@@ -15,10 +15,11 @@ public class ShortUrl {
     @Indexed
     private Long key;
     private LocalDate createdDate;
+    private LocalDate lastAccessDate;
     @Indexed
     private String longUrl;
-//    private Integer visits;
     private Stats stats;
+
 
     public ShortUrl() {
     }
@@ -67,4 +68,11 @@ public class ShortUrl {
         this.key = key;
     }
 
+    public LocalDate getLastAccessDate() {
+        return lastAccessDate;
+    }
+
+    public void setLastAccessDate(LocalDate lastAccessDate) {
+        this.lastAccessDate = lastAccessDate;
+    }
 }

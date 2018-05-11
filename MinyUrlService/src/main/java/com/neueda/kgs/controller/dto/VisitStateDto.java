@@ -3,11 +3,14 @@ package com.neueda.kgs.controller.dto;
 import com.neueda.kgs.model.embedded.BrowserStats;
 import com.neueda.kgs.model.embedded.OsStat;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VisitStateDto extends BaseResponse {
 
+    private LocalDate lastAccessDate;
     private Double dailyAverage;
     private Long max;
     private Long min;
@@ -15,6 +18,7 @@ public class VisitStateDto extends BaseResponse {
     private Map<String, Long> perMonth;
     private BrowserStats byBrowsers;
     private OsStat byOs;
+
 
     public Map<String, Long> getPerMonth() {
         return perMonth;
@@ -71,5 +75,13 @@ public class VisitStateDto extends BaseResponse {
 
     public void setByOs(OsStat byOs) {
         this.byOs = byOs;
+    }
+
+    public LocalDate getLastAccessDate() {
+        return lastAccessDate;
+    }
+
+    public void setLastAccessDate(LocalDate lastAccessDate) {
+        this.lastAccessDate = lastAccessDate;
     }
 }

@@ -65,6 +65,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
                 .orElseThrow(KeyNotFoundException::new);
 
         this.updateStats(dto, shortUrl);
+        shortUrl.setLastAccessDate(LocalDate.now());
         shortUrlRepository.save(shortUrl);
         return shortUrl;
     }
@@ -85,6 +86,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         dto.setPerMonth(getMonthlyVisitReport(shortUrl));
         dto.setByOs(shortUrl.getStats().getOsStat());
         dto.setByBrowsers(shortUrl.getStats().getBrowserStats());
+        dto.setLastAccessDate(shortUrl.getLastAccessDate());
         dto.setCode(BaseResponse.SUCCESSFUL);
         dto.setSuccess(true);
         dto.setMessage("analytics");
