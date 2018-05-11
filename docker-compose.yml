@@ -1,0 +1,29 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.0.4
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+
+  app:
+    build: ./KeyGeneratorService
+    expose:
+      - "8080"
+    links:
+      - mongodb
+    environment:
+        SPRING_DATA_MONGODB_URI: mongodb://mongodb/MinyUrl
+        SPRING_APPLICATION_NAME: miny-url-service
+    depends_on:
+       - mongodb
+
+  nginx:
+   container_name: proxy-nginx
+   build:
+    context:  ./nginx
+    dockerfile: Dockerfile
+   ports:
+   - 8080:80
+   depends_on:
+   - app
