@@ -12,6 +12,7 @@ services:
       - "8080"
     links:
       - mongodb
+      - redis
     environment:
         SPRING_DATA_MONGODB_URI: mongodb://mongodb/MinyUrl
         SPRING_APPLICATION_NAME: miny-url-service
@@ -27,3 +28,9 @@ services:
    - 8080:80
    depends_on:
    - app
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+

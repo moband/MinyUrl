@@ -1,5 +1,6 @@
 package com.neueda.kgs.service.impl;
 
+import com.neueda.kgs.Application;
 import com.neueda.kgs.controller.dto.BaseResponse;
 import com.neueda.kgs.controller.dto.NewLinkDto;
 import com.neueda.kgs.controller.dto.ResolveLinkDto;
@@ -16,7 +17,7 @@ import com.neueda.kgs.service.ShortUrlService;
 import com.neueda.kgs.service.WorkerStatusService;
 import com.neueda.kgs.util.Base58;
 import com.neueda.kgs.util.Utility;
-import org.apache.commons.validator.UrlValidator;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
@@ -57,6 +58,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     }
 
+    @Cacheable(value = Application.CACHE_MINYLY,key = "#dto.shortUrl")
     @Override
     public ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException {
         if (dto.getShortUrl() == null || "".equals(dto.getShortUrl())) throw new InvalidAddressException();

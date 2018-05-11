@@ -1,8 +1,7 @@
-package com.neueda.kgs;
+package com.neueda.kgs.config;
 
 import com.neueda.kgs.aspect.DuplicateKeyExceptionAspect;
 import com.neueda.kgs.aspect.LoggingAspect;
-import com.neueda.kgs.exception.ApplicationExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
