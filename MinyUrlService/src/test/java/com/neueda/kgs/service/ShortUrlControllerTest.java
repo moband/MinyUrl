@@ -72,7 +72,7 @@ public class ShortUrlControllerTest {
 
         //When
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
-                "/api/v1/allocate").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
+                "/api/v1/shortify").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //Then
@@ -93,7 +93,7 @@ public class ShortUrlControllerTest {
 
         //When
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
-                "/api/v1/allocate").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
+                "/api/v1/shortify").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //Then
@@ -114,7 +114,7 @@ public class ShortUrlControllerTest {
 
         //When
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
-                "/api/v1/allocate").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
+                "/api/v1/shortify").accept(MediaType.APPLICATION_JSON).content(linkDTOJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //Then
