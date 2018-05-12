@@ -1,7 +1,5 @@
 package com.neueda.kgs.service.impl;
 
-import com.neueda.kgs.Application;
-import com.neueda.kgs.config.CacheConfig;
 import com.neueda.kgs.controller.dto.BaseResponse;
 import com.neueda.kgs.controller.dto.NewLinkDto;
 import com.neueda.kgs.controller.dto.ResolveLinkDto;
@@ -18,7 +16,6 @@ import com.neueda.kgs.service.ShortUrlService;
 import com.neueda.kgs.service.WorkerStatusService;
 import com.neueda.kgs.util.Base58;
 import com.neueda.kgs.util.Utility;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
@@ -27,6 +24,11 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
 
+/**
+ * Service for shortening , expanding and providing statistics
+ *
+ * @author MohammadReza Alagheband
+ */
 @Service
 public class ShortUrlServiceImpl implements ShortUrlService {
     private ShortUrlRepository shortUrlRepository;
@@ -38,6 +40,17 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         this.workerStatusService = workerStatusService;
     }
 
+    /**
+     * the service that provides shortening url
+     * for shortening purpose, workerID (docker Container instance hostname) should be extracted
+     * and based on that a new code is used to be encoded in base58.
+     * after code assignement , created date , stats are also initilized.
+     *
+     * @param linkDto a container to hold the provided long url
+     * @return short url generated based on base58 encoding mechanism
+     * @throws MalformedURLException if the format of the provided url is not valid
+     * @throws UnknownHostException  if the system requesting, does not have proper hostname
+     */
     @Override
     public String shorten(NewLinkDto linkDto) throws UnknownHostException, MalformedURLException {
         String workerID = Utility.getHostname();
@@ -59,6 +72,15 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     }
 
+    /**
+     * once shortUrl is provided , this method will return corresponding url by decoding and converting in back
+     * to decimal system and finding appropriate long url with that decimal key in the DB
+     *
+     * @param dto container that holds requesting browser , os and shortUrl
+     * @return founded ShortUrl Entity matching the given in the dto shortUrl.
+     * @throws KeyNotFoundException    if the provided shortUrl is not available in the DB
+     * @throws InvalidAddressException if the key (or short url) is empty or null
+     */
     @Override
     public ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException {
         if (dto.getShortUrl() == null || "".equals(dto.getShortUrl())) throw new InvalidAddressException();
@@ -73,6 +95,13 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     }
 
 
+    /**
+     * give the shortUrl generated code, statistics is calculated and will be returned
+     *
+     * @param key give the shortUrl generated code,
+     * @return analytics information for the give shortUrl generated code in the VisitStateDto Obj
+     * @throws KeyNotFoundException if the provided shortUrl is not available in the DB
+     */
     public VisitStateDto getVisitStateByKey(String key) throws KeyNotFoundException {
         VisitStateDto dto = new VisitStateDto();
         ShortUrl shortUrl = Optional.ofNullable(shortUrlRepository.findByKey(Base58.toBase10(key)))
@@ -96,6 +125,13 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         return dto;
     }
 
+    /**
+     * once expanding request, the stats such as browser and os requesting , nth day of year request has come are updated
+     *
+     * @param dto      container that holds requesting browser , os and shortUrl
+     * @param shortUrl founded shortUrl from DB , to be updated
+     * @return stats updated obj of the requested shortURL
+     */
     private ShortUrl updateStats(ResolveLinkDto dto, ShortUrl shortUrl) {
         switch (dto.getBrowser().toLowerCase()) {
             case "internet explorer":
@@ -157,6 +193,11 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         return shortUrl;
     }
 
+    /**
+     * stats initialized once new shortening request comes to service
+     *
+     * @return initialized Stats
+     */
     private Stats initState() {
         Stats state = new Stats();
         state.setBrowserStats(new BrowserStats());
@@ -164,6 +205,13 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         return state;
     }
 
+    /**
+     * request are recorded as the nth day of the year in the DateStats,so this methos loops through the each month
+     * and calculates total visit of each month by summing during that month.
+     *
+     * @param shortUrl founded shortUrl from DB for which date are going to be calculated monthly
+     * @return a map of that key represent month name, and value is equal to the sum of visits in that month
+     */
     private Map<String, Long> getMonthlyVisitReport(ShortUrl shortUrl) {
         int year = LocalDate.now().getYear();
         Map<String, Long> monthlyVisitsReport = new HashMap<>();
@@ -176,6 +224,14 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         return monthlyVisitsReport;
     }
 
+    /**
+     * a helper to calculate the sum of visit during a date range by startDay number of year to endDay number in the year
+     *
+     * @param shortUrl founded shortUrl from DB for which date are going to be calculated monthly
+     * @param startDay start nth day of the range
+     * @param lastDay  end nth day of the range
+     * @return sum of visits in the duration
+     */
     private Long getTotalVisitForAMonth(ShortUrl shortUrl, Integer startDay, Integer lastDay) {
         return shortUrl.getStats().getDateStats().stream().filter(d -> d.getDayOfYear() >= startDay && d.getDayOfYear() < lastDay).mapToLong(d -> d.getVisits()).sum();
     }

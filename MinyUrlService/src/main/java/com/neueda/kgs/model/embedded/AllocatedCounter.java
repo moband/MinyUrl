@@ -1,7 +1,6 @@
 package com.neueda.kgs.model.embedded;
 
 import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.index.Indexed;
 
 public class AllocatedCounter {
 
@@ -46,4 +45,5 @@ public class AllocatedCounter {
     public void incrementCounter(){
         ++this.counter;
     }
+
 }
