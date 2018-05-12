@@ -1,6 +1,8 @@
 package com.neueda.kgs.model.embedded;
 
-public class DateStat {
+import java.io.Serializable;
+
+public class DateStat implements Serializable {
     private Integer dayOfYear;
     private Integer visits;
 

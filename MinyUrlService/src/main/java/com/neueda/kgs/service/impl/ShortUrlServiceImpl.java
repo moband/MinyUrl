@@ -1,6 +1,7 @@
 package com.neueda.kgs.service.impl;
 
 import com.neueda.kgs.Application;
+import com.neueda.kgs.config.CacheConfig;
 import com.neueda.kgs.controller.dto.BaseResponse;
 import com.neueda.kgs.controller.dto.NewLinkDto;
 import com.neueda.kgs.controller.dto.ResolveLinkDto;
@@ -58,7 +59,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     }
 
-    @Cacheable(value = Application.CACHE_MINYLY,key = "#dto.shortUrl")
+    @Cacheable(value = CacheConfig.CACHE_MINYLY,key = "#dto.shortUrl")
     @Override
     public ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException {
         if (dto.getShortUrl() == null || "".equals(dto.getShortUrl())) throw new InvalidAddressException();

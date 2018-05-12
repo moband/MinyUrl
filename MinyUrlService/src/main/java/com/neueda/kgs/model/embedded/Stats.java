@@ -1,9 +1,10 @@
 package com.neueda.kgs.model.embedded;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stats {
+public class Stats implements Serializable {
 
     private BrowserStats browserStats;
     private OsStat osStat;

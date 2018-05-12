@@ -1,6 +1,8 @@
 package com.neueda.kgs.model.embedded;
 
-public class BrowserStats {
+import java.io.Serializable;
+
+public class BrowserStats implements Serializable {
     private Long ie=0L;
     private Long fireFox=0L;
     private Long chrome=0L;

@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost/MinyUrl
-  redis
+      uri: mongodb://mongodb/MinyUrl
+  redis:
     host: redis
-    port:6379
+    port: 6379

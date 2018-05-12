@@ -1,6 +1,8 @@
 package com.neueda.kgs.model.embedded;
 
-public class OsStat {
+import java.io.Serializable;
+
+public class OsStat implements Serializable {
     private Long windows=0L;
     private Long macOs=0L;
     private Long linux=0L;
