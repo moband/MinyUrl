@@ -19,6 +19,19 @@ services:
     depends_on:
        - mongodb
 
+  app2:
+    build: ./MinyUrlService
+    expose:
+      - "8080"
+    links:
+      - mongodb
+      - redis
+    environment:
+        SPRING_DATA_MONGODB_URI: mongodb://mongodb/MinyUrl
+        SPRING_APPLICATION_NAME: miny-url-service
+    depends_on:
+       - mongodb
+
   nginx:
    container_name: proxy-nginx
    build:
@@ -28,6 +41,8 @@ services:
    - 8080:80
    depends_on:
    - app
+   - app2
+
 
   redis:
     image: redis
