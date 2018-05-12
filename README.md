@@ -46,7 +46,7 @@ You need to have Java 8 jdk installed on you system
     ``` 
 5. To access your shorted url: (***KEY*** is the shorted code generated in the 3rd step)
     ```
-    curl -v -X GET http://localhost:8080/KEY
+    curl -v -X GET http://localhost:8080/api/v1/KEY
     ```
 6. To access analytics for a url: (***KEY*** is the shorted code generated in the 3rd step)
 
@@ -66,7 +66,7 @@ To run the tests :    `mvn test`
 
 **Get shortened URLs list:**
 ```
-GET /KEY
+GET /api/v1/KEY
 ```
 where ***KEY*** Is shorted link 
 
