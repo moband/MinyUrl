@@ -59,7 +59,6 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
     }
 
-    @Cacheable(value = CacheConfig.CACHE_MINYLY,key = "#dto.shortUrl")
     @Override
     public ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException {
         if (dto.getShortUrl() == null || "".equals(dto.getShortUrl())) throw new InvalidAddressException();
