@@ -41,7 +41,7 @@ public class ShortUrlController {
         response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
     }
 
-    @PostMapping("/api/v1/allocate")
+    @PostMapping("/api/v1/shortify")
     public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws  MalformedURLException, UnknownHostException {
 
         String key = shortUrlService.shorten(dto);
