@@ -53,10 +53,6 @@ You need to have Java 8 jdk installed on you system
     ```
     curl -v  -H "Content-Type: application/json" -X GET http://localhost:8080/api/v1/stat/KEY
     ```
-7. To scale MinyUrl Service:
-    ```
-    docker-compose scale app=3
-    ```
 
 ## Running the tests
 
