@@ -27,7 +27,7 @@ public class ShortUrlController {
         this.shortUrlService = shortUrlService;
     }
 
-    @GetMapping("/{key}")
+    @GetMapping("/api/v1/{key}")
     public void expandingUrl(@PathVariable String key, HttpServletRequest request, HttpServletResponse response) throws KeyNotFoundException, IOException, InvalidAddressException {
 
         ResolveLinkDto dto = new ResolveLinkDto();

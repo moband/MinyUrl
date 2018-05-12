@@ -7,7 +7,7 @@ services:
     command: mongod --smallfiles
 
   app:
-    build: ./KeyGeneratorService
+    build: ./MinyUrlService
     expose:
       - "8080"
     links:

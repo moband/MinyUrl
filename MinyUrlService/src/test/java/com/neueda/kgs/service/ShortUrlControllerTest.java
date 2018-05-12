@@ -188,7 +188,7 @@ public class ShortUrlControllerTest {
 
         //When
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/Y3dwP");
+                "/api/v1/Y3dwP");
 
         //Then
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().is3xxRedirection())
