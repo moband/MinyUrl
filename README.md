@@ -29,7 +29,7 @@
 You need to have Java 8 jdk installed on you system
 
 1. Clone this repository
-2. To package jar file and create the image for **MinyUrlService** execute: 
+2. To package jar file and create the app image execute the following command in **MinyUrlService** directory: 
     ```
     mvn clean package docker:build
     ```
