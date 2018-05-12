@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 
 public interface ShortUrlService {
 
-    String shorten(NewLinkDto linkDto) throws WorkerNotFoundException, MalformedURLException, UnknownHostException;
+    String shorten(NewLinkDto linkDto) throws  MalformedURLException, UnknownHostException;
 
     ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException;
 

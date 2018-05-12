@@ -42,7 +42,7 @@ public class ShortUrlController {
     }
 
     @PostMapping("/api/v1/allocate")
-    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws WorkerNotFoundException, MalformedURLException, UnknownHostException {
+    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws  MalformedURLException, UnknownHostException {
 
         String key = shortUrlService.shorten(dto);
         return ResponseEntity.ok().body(new BaseResponse(true,key,BaseResponse.SUCCESSFUL));

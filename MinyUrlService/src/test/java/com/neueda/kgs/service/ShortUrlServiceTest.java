@@ -158,7 +158,7 @@ public class ShortUrlServiceTest {
 
 
     @Test(expected = MalformedURLException.class)
-    public void should_throwException_when_urlIsNotValid() throws  MalformedURLException, UnknownHostException {
+    public void should_throwException_when_urlIsNotValid() throws MalformedURLException, UnknownHostException {
 
         // Given
         NewLinkDto dto = newLinkDtoInit();
