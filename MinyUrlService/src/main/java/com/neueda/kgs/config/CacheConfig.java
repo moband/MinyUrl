@@ -11,7 +11,6 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
 @Configuration
 @EnableCaching
-@EnableAutoConfiguration
 public class CacheConfig
 {
 
@@ -20,14 +19,10 @@ public class CacheConfig
      */
     public static final String CACHE_MINYLY = "minyly";
 
-    @Value("${spring.redis.host}")
-    private  String redisHost ;
-    @Value("${spring.redis.port}")
-    private Integer redisPort;
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisHost, redisPort);
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("redis", 6379);
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
