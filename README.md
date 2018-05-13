@@ -81,7 +81,7 @@ POST /api/v1/shortify
 ```
 {
 	"success": true,
-	"message": "b",
+	"message": "YQTH",
 	"code": 0
 }
 ```
