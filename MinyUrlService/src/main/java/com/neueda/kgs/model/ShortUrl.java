@@ -11,10 +11,12 @@ import java.time.LocalDate;
 @Document(collection = "shorturl")
 public class ShortUrl implements Serializable {
 
+    private static final long serialVersionUID = 6529685098267757690L;
+
     @Id
     private String id;
     @Indexed
-    private Long key;
+    private Long keyCode;
     private LocalDate createdDate;
     private LocalDate lastAccessDate;
     @Indexed
@@ -25,8 +27,8 @@ public class ShortUrl implements Serializable {
     public ShortUrl() {
     }
 
-    public ShortUrl(Long key) {
-        this.key = key;
+    public ShortUrl(Long keyCode) {
+        this.keyCode = keyCode;
     }
 
     public String getId() {
@@ -61,12 +63,12 @@ public class ShortUrl implements Serializable {
         this.stats = stats;
     }
 
-    public Long getKey() {
-        return key;
+    public Long getKeyCode() {
+        return keyCode;
     }
 
-    public void setKey(Long key) {
-        this.key = key;
+    public void setKeyCode(Long keyCode) {
+        this.keyCode = keyCode;
     }
 
     public LocalDate getLastAccessDate() {

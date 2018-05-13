@@ -1,6 +1,7 @@
 package com.neueda.kgs.service;
 
 
+import com.neueda.kgs.exception.KeyOverFlowException;
 import com.neueda.kgs.model.embedded.AllocatedCounter;
 import com.neueda.kgs.model.WorkerStatus;
 import com.neueda.kgs.repository.WorkerStatusRepository;
@@ -57,7 +58,7 @@ public class WorkerStatusServiceTest {
     }
 
     @Test
-    public void should_generateDecimalID_when_urlIsValidAndDoesNotExist() {
+    public void should_generateDecimalID_when_urlIsValidAndDoesNotExist() throws KeyOverFlowException {
 
         //Given
         String workerId = "33cc6eebd387";
@@ -72,7 +73,7 @@ public class WorkerStatusServiceTest {
     }
 
     @Test
-    public void should_ExhaustAFilledRange_when_theLastAllocationRequest() {
+    public void should_ExhaustAFilledRange_when_theLastAllocationRequest() throws KeyOverFlowException {
 
         //Given
         WorkerStatus workerStatus = initEastingScenarioModel();
@@ -87,7 +88,7 @@ public class WorkerStatusServiceTest {
     }
 
     @Test
-    public void should_AllocateNewRange_when_AllOtherRangesAlreadyExhauted() {
+    public void should_AllocateNewRange_when_AllOtherRangesAlreadyExhauted() throws KeyOverFlowException {
 
         //Given
         WorkerStatus workerStatus = initNewRangeAllocationScenarioModel();

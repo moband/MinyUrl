@@ -1,6 +1,7 @@
 package com.neueda.kgs.service.impl;
 
 import com.neueda.kgs.aspect.Retry;
+import com.neueda.kgs.exception.KeyOverFlowException;
 import com.neueda.kgs.model.WorkerStatus;
 import com.neueda.kgs.model.embedded.AllocatedCounter;
 import com.neueda.kgs.repository.WorkerStatusRepository;
@@ -42,10 +43,12 @@ public class WorkerStatusServiceImpl implements WorkerStatusService {
      *
      * @param workerId hostname of the service container in the docker
      * @return a new decimal key to be encoded in base58
+     * <p>
+     * * @throws KeyOverFlowException  if the system has exhausted the maximum amount of counters
      */
     @Retry(times = 10, on = org.springframework.dao.OptimisticLockingFailureException.class)
     @Override
-    public Long getNewKey(String workerId) {
+    public Long getNewKey(String workerId) throws KeyOverFlowException {
         WorkerStatus workerStatus = Optional.ofNullable(workerStatusRepository.findByWorkerId(workerId))
                 .map(c -> c)
                 .orElseGet(() -> new WorkerStatus(workerId));
@@ -54,6 +57,7 @@ public class WorkerStatusServiceImpl implements WorkerStatusService {
                 .findFirst()
                 .map(s -> {
                     Long key2 = workerStatus.getAllocatedRanges().stream().filter(a -> a.getExhausted() == false).mapToLong(a -> {
+                        if (a.getCounter() == Long.MAX_VALUE) return -1; // in case of key overflow in the system
                         a.incrementCounter();
                         a.setExhausted(a.getCounter() == ((a.getRangeNumber() + 1) * GlobalConstants.KeyNumbersInPartitions - 1));
                         return a.getCounter();
@@ -73,6 +77,7 @@ public class WorkerStatusServiceImpl implements WorkerStatusService {
                     return key2;
                 });
 
+        if (key < 0) throw new KeyOverFlowException();
         workerStatusRepository.save(workerStatus);
         return key;
 

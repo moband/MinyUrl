@@ -11,6 +11,7 @@ import com.neueda.kgs.model.embedded.BrowserStats;
 import com.neueda.kgs.model.embedded.DateStat;
 import com.neueda.kgs.model.embedded.OsStat;
 import com.neueda.kgs.model.embedded.Stats;
+import org.apache.tomcat.jni.Local;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,7 +145,7 @@ public class ShortUrlControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(dto.getMessage()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(dto.getCode()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(dto.isSuccess()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastAccessDate").value("2018-04-30"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastAccessDate").value(dto.getLastAccessDate().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dailyAverage").value(dto.getDailyAverage()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.max").value(dto.getMax()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.min").value(dto.getMin()))
@@ -198,7 +199,7 @@ public class ShortUrlControllerTest {
 
     private VisitStateDto initVisitStateDto() {
         VisitStateDto dto = new VisitStateDto();
-        dto.setLastAccessDate(LocalDate.now().minusDays(12));
+        dto.setLastAccessDate(LocalDate.of(2018,1,1));
         dto.setTotalPerYear(12L);
         dto.setDailyAverage(3.0);
         dto.setMessage("analytics");
@@ -254,7 +255,7 @@ public class ShortUrlControllerTest {
 
         stats.getDateStats().addAll(Arrays.asList(dateStat1, dateStat2));
 
-        shortUrl.setKey(1L);
+        shortUrl.setKeyCode(1L);
         shortUrl.setStats(stats);
 
         return shortUrl;

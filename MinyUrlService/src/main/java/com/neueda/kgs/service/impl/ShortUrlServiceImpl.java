@@ -6,6 +6,7 @@ import com.neueda.kgs.controller.dto.ResolveLinkDto;
 import com.neueda.kgs.controller.dto.VisitStateDto;
 import com.neueda.kgs.exception.InvalidAddressException;
 import com.neueda.kgs.exception.KeyNotFoundException;
+import com.neueda.kgs.exception.KeyOverFlowException;
 import com.neueda.kgs.model.ShortUrl;
 import com.neueda.kgs.model.embedded.BrowserStats;
 import com.neueda.kgs.model.embedded.DateStat;
@@ -50,19 +51,20 @@ public class ShortUrlServiceImpl implements ShortUrlService {
      * @return short url generated based on base58 encoding mechanism
      * @throws MalformedURLException if the format of the provided url is not valid
      * @throws UnknownHostException  if the system requesting, does not have proper hostname
+     * @throws KeyOverFlowException  if the system has exhausted the maximum amount of counters
      */
     @Override
-    public String shorten(NewLinkDto linkDto) throws UnknownHostException, MalformedURLException {
+    public String shorten(NewLinkDto linkDto) throws UnknownHostException, MalformedURLException, KeyOverFlowException {
         String workerID = Utility.getHostname();
         linkDto.setLongUrl(Utility.urlNormalization(linkDto.getLongUrl()));
 
         if (!Utility.isUrlValid(linkDto.getLongUrl())) throw new MalformedURLException();
         Optional<ShortUrl> existingShortUrl = Optional.ofNullable(shortUrlRepository.findByLongUrl(linkDto.getLongUrl()));
-        if (existingShortUrl.isPresent()) return Base58.fromBase10(existingShortUrl.get().getKey());
+        if (existingShortUrl.isPresent()) return Base58.fromBase10(existingShortUrl.get().getKeyCode());
 
         Long newKey = workerStatusService.getNewKey(workerID);
         ShortUrl newShortUrl = new ShortUrl();
-        newShortUrl.setKey(newKey);
+        newShortUrl.setKeyCode(newKey);
         newShortUrl.setLongUrl(linkDto.getLongUrl());
         newShortUrl.setStats(this.initState());
         newShortUrl.setCreatedDate(LocalDate.now());
@@ -84,7 +86,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     @Override
     public ShortUrl resolve(ResolveLinkDto dto) throws KeyNotFoundException, InvalidAddressException {
         if (dto.getShortUrl() == null || "".equals(dto.getShortUrl())) throw new InvalidAddressException();
-        ShortUrl shortUrl = Optional.ofNullable(shortUrlRepository.findByKey(Base58.toBase10(dto.getShortUrl())))
+        ShortUrl shortUrl = Optional.ofNullable(shortUrlRepository.findByKeyCode(Base58.toBase10(dto.getShortUrl())))
                 .map(c -> c)
                 .orElseThrow(KeyNotFoundException::new);
 
@@ -104,7 +106,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
      */
     public VisitStateDto getVisitStateByKey(String key) throws KeyNotFoundException {
         VisitStateDto dto = new VisitStateDto();
-        ShortUrl shortUrl = Optional.ofNullable(shortUrlRepository.findByKey(Base58.toBase10(key)))
+        ShortUrl shortUrl = Optional.ofNullable(shortUrlRepository.findByKeyCode(Base58.toBase10(key)))
                 .map(c -> c)
                 .orElseThrow(KeyNotFoundException::new);
 

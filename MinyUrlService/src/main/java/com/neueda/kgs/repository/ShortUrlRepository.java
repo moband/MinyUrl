@@ -8,11 +8,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ShortUrlRepository extends MongoRepository<ShortUrl,String> {
+public interface ShortUrlRepository extends MongoRepository<ShortUrl, String> {
     @Cacheable(value = CacheConfig.CACHE_MINYLY)
-    ShortUrl findByKey(Long key);
+    ShortUrl findByKeyCode(Long key);
+
     ShortUrl findByLongUrl(String url);
 
-    @CachePut(value = CacheConfig.CACHE_MINYLY,key = "#s.key")
-    ShortUrl save(ShortUrl s);
+    @CachePut(value = CacheConfig.CACHE_MINYLY, key = "#shortUrl.keyCode")
+    ShortUrl save(ShortUrl shortUrl);
 }

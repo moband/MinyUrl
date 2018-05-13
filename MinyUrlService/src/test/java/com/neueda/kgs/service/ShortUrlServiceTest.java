@@ -6,6 +6,7 @@ import com.neueda.kgs.controller.dto.ResolveLinkDto;
 import com.neueda.kgs.controller.dto.VisitStateDto;
 import com.neueda.kgs.exception.InvalidAddressException;
 import com.neueda.kgs.exception.KeyNotFoundException;
+import com.neueda.kgs.exception.KeyOverFlowException;
 import com.neueda.kgs.model.ShortUrl;
 import com.neueda.kgs.model.embedded.BrowserStats;
 import com.neueda.kgs.model.embedded.DateStat;
@@ -99,7 +100,7 @@ public class ShortUrlServiceTest {
         ShortUrl shortUrl = this.shortUtilInit();
         ResolveLinkDto dto = resolveLinkDtoInit();
         Long key = 1L;
-        when(repository.findByKey(key)).thenReturn(shortUrl);
+        when(repository.findByKeyCode(key)).thenReturn(shortUrl);
 
 
         Long previousChromStat = shortUrl.getStats().getBrowserStats().getChrome();
@@ -140,7 +141,7 @@ public class ShortUrlServiceTest {
 
 
     @Test
-    public void should_generateShortenedUrl_when_urlIsValidAndDoesNotExist() throws MalformedURLException, UnknownHostException {
+    public void should_generateShortenedUrl_when_urlIsValidAndDoesNotExist() throws MalformedURLException, UnknownHostException, KeyOverFlowException {
 
         // Given
         NewLinkDto dto = newLinkDtoInit();
@@ -158,7 +159,7 @@ public class ShortUrlServiceTest {
 
 
     @Test(expected = MalformedURLException.class)
-    public void should_throwException_when_urlIsNotValid() throws MalformedURLException, UnknownHostException {
+    public void should_throwException_when_urlIsNotValid() throws MalformedURLException, UnknownHostException, KeyOverFlowException {
 
         // Given
         NewLinkDto dto = newLinkDtoInit();
@@ -173,7 +174,7 @@ public class ShortUrlServiceTest {
     public void should_calculateStatistics_when_ShortUrlExist() throws KeyNotFoundException {
         // Given
         Long key = 1L;
-        when(repository.findByKey(key)).thenReturn(shortUtilInit());
+        when(repository.findByKeyCode(key)).thenReturn(shortUtilInit());
         //When
         VisitStateDto dto = service.getVisitStateByKey(Base58.fromBase10(key));
         //Then

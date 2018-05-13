@@ -6,6 +6,7 @@ import com.neueda.kgs.controller.dto.ResolveLinkDto;
 import com.neueda.kgs.controller.dto.VisitStateDto;
 import com.neueda.kgs.exception.InvalidAddressException;
 import com.neueda.kgs.exception.KeyNotFoundException;
+import com.neueda.kgs.exception.KeyOverFlowException;
 import com.neueda.kgs.service.ShortUrlService;
 import com.neueda.kgs.util.Utility;
 import org.springframework.http.ResponseEntity;
@@ -61,9 +62,10 @@ public class ShortUrlController {
      * @return Output the generated short url in the message item of the json.
      * @throws MalformedURLException if the format of the provided url is not valid
      * @throws UnknownHostException  if the system requesting, does not have proper hostname
+     * @throws KeyOverFlowException  if the system has exhausted the maximum amount of counters
      */
     @PostMapping("/api/v1/shortify")
-    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws MalformedURLException, UnknownHostException {
+    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws MalformedURLException, UnknownHostException, KeyOverFlowException {
 
         String key = shortUrlService.shorten(dto);
         return ResponseEntity.ok().body(new BaseResponse(true, key, BaseResponse.SUCCESSFUL));
