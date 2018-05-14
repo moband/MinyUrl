@@ -44,11 +44,11 @@ You need to have Java 8 jdk installed on you system
     ```
     curl -v -H "Content-Type: application/json" -X POST -d '{"longUrl":"www.google.com"}' http://localhost:8080/api/v1/shortify
     ``` 
-5. To access your shorted url: (***KEY*** is the shorted code generated in the 3rd step)
+5. To access your shorted url: (***KEY*** is the shorted code generated in the 4th step)
     ```
     curl -v -X GET http://localhost:8080/api/v1/KEY
     ```
-6. To access analytics for a url: (***KEY*** is the shorted code generated in the 3rd step)
+6. To access analytics for a url: (***KEY*** is the shorted code generated in the 4th step)
 
     ```
     curl -v  -H "Content-Type: application/json" -X GET http://localhost:8080/api/v1/stat/KEY
