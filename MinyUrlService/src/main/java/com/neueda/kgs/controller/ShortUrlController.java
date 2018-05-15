@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 /**
@@ -65,10 +67,10 @@ public class ShortUrlController {
      * @throws KeyOverFlowException  if the system has exhausted the maximum amount of counters
      */
     @PostMapping("/api/v1/shortify")
-    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws MalformedURLException, UnknownHostException, KeyOverFlowException {
+    public ResponseEntity<BaseResponse> assignNewKey(@RequestBody NewLinkDto dto) throws MalformedURLException, UnknownHostException, KeyOverFlowException, URISyntaxException {
 
         String key = shortUrlService.shorten(dto);
-        return ResponseEntity.ok().body(new BaseResponse(true, key, BaseResponse.SUCCESSFUL));
+        return ResponseEntity.created(new URI("/api/v1/" +key)).body(new BaseResponse(true, key, BaseResponse.SUCCESSFUL));
     }
 
     /**
