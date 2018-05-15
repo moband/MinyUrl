@@ -77,7 +77,7 @@ public class ShortUrlControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         //Then
-        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk())
+        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("b"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(BaseResponse.SUCCESSFUL))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
