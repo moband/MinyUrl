@@ -1,7 +1,7 @@
 package com.neueda.kgs.util;
 
 public class Base58 {
-    public static final String ALPHABET = "abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
+    public static final String ALPHABET = "abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
     public static final int BASE = ALPHABET.length();
 
 
